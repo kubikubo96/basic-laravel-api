@@ -122,8 +122,8 @@ abstract class BaseRepository
      */
     public function createOrUpdate(array $data)
     {
-        if(isset($data['update_id'])) {
-            $this->update($data['update_id'], $data);
+        if(isset($data['id'])) {
+            $this->update($data['id'], $data);
         }
         return $this->create($data);
     }
