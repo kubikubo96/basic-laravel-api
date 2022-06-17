@@ -11,6 +11,9 @@ abstract class BaseRepository
      */
     protected $_model;
 
+    /**
+     * BaseRepository constructor.
+     */
     public function __construct()
     {
         $this->setModel();
@@ -18,6 +21,8 @@ abstract class BaseRepository
 
     /**
      * Get model
+     *
+     * @return mixed
      */
     abstract public function getModel();
 
@@ -30,7 +35,7 @@ abstract class BaseRepository
     }
 
     /**
-     * Get all
+     * @return \Illuminate\Database\Eloquent\Collection|Model[]
      */
     public function all()
     {
@@ -144,11 +149,14 @@ abstract class BaseRepository
     }
 
     /**
-     * restore: un-delete
+     * Restore: un-delete
+     *
+     * @param $instance
+     * @return mixed
      */
     public function restore($instance)
     {
-        return $instance->_model->restore();
+        return $instance->restore();
     }
 
     /**
@@ -319,8 +327,8 @@ abstract class BaseRepository
             $limit = 100;
         }
 
-        $query->skip(($page - 1) * $limit);
         $query->take($limit);
+        $query->skip(($page - 1) * $limit);
 
         return $query->get();
     }
