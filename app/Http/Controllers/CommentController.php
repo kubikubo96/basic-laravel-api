@@ -29,7 +29,7 @@ class CommentController extends Controller
     {
         try {
             $data = $this->commentRepo->paginate([], $request->page, $request->limit);
-            return Response::success($data['list'], $data['total']);
+            return Response::success($data['data'], $data['total']);
         } catch (Exception $e) {
             TelegramService::sendError($e);
             return Response::error($e->getMessage());
