@@ -55,7 +55,7 @@ abstract class BaseRepository
     public function create(array $data)
     {
         $result = $this->_model->create($data);
-        if($result) {
+        if ($result) {
             $id = $result['id'] ?? $result['uuid'];
             return $this->_model->find($id);
         }
@@ -122,7 +122,7 @@ abstract class BaseRepository
      */
     public function createOrUpdate(array $data)
     {
-        if(isset($data['id'])) {
+        if (isset($data['id'])) {
             $this->update($data['id'], $data);
         }
         return $this->create($data);
@@ -134,8 +134,8 @@ abstract class BaseRepository
      * Nếu tìm được column theo option, thì update data
      * Nếu không tìm được, thì tạo mới theo option và data
      *
-     * @param $option
-     * @param $data
+     * @param array $option
+     * @param array $data
      * @return mixed
      */
     public function updateOrCreate(array $option, array $data)
@@ -207,7 +207,7 @@ abstract class BaseRepository
                 }
             }
         }
-        if($with) {
+        if ($with) {
             $query = $query->with($with);
         }
         if ($order) {
@@ -237,12 +237,12 @@ abstract class BaseRepository
             $query = $this->switchQuery($options['options'], $query);
         }
 
-        if(!empty($options['with'])) {
-            if(!empty($options['with']['relation'])) {
+        if (!empty($options['with'])) {
+            if (!empty($options['with']['relation'])) {
                 $relation = $options['with']['relation'];
                 $options = $options['with']['options'] ?? [];
                 $query = $query->with([$relation => function ($query) use ($options) {
-                    if(!empty($options)) {
+                    if (!empty($options)) {
                         $this->switchQuery($options, $query);
                     }
                 }]);
@@ -251,25 +251,26 @@ abstract class BaseRepository
             }
         }
 
-        if(!empty($options['where-has'])) {
-            if(!empty($options['where-has']['relation'])) {
+        if (!empty($options['where-has'])) {
+            if (!empty($options['where-has']['relation'])) {
                 $relation = $options['where-has']['relation'];
                 $options = $options['where-has']['options'] ?? [];
                 $query = $query->whereHas($relation, function ($query) use ($options) {
-                    if(!empty($options)) {
+                    if (!empty($options)) {
                         $this->switchQuery($options, $query);
                     }
                 });
             } else {
-                $query = $query->whereHas($options['where-has'], function ($query) {});
+                $query = $query->whereHas($options['where-has'], function ($query) {
+                });
             }
         }
 
-        if(isset($options['with-trash'])) {
+        if (isset($options['with-trash'])) {
             $query = $query->withTrashed();
         }
 
-        if(isset($options['only-trash'])) {
+        if (isset($options['only-trash'])) {
             $query = $query->onlyTrashed();
         }
 
@@ -291,7 +292,7 @@ abstract class BaseRepository
      * Get first theo query deeper
      *
      * @param array $options
-     * @param array $with
+     * @return mixed
      */
     public function firstDeeper($options = [])
     {
