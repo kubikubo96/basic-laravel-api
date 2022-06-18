@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('name');
+            $table->string('guard_name')->default('api');
             $table->tinyInteger('can_not_delete')->default(0)->nullable();
             $table->timestamps();
         });

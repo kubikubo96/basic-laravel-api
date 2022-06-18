@@ -4,20 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Response;
 use App\Repositories\PermissionRepository;
+use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
 use App\Services\TelegramService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Exception;
+use Illuminate\Support\Arr;
 use Validator;
 
 class PermissionController extends Controller
 {
 
     protected $permissionRepo;
+    protected $roleRepo;
+    protected $userRepo;
 
-    public function __construct(PermissionRepository $permissionRepo)
+    public function __construct(PermissionRepository $permissionRepo, RoleRepository $roleRepo, UserRepository $userRepo)
     {
         $this->permissionRepo = $permissionRepo;
+        $this->roleRepo = $roleRepo;
+        $this->userRepo = $userRepo;
     }
 
     /**
@@ -46,15 +53,15 @@ class PermissionController extends Controller
         try {
             $validator = Validator::make($request->all(),
                 [
-                    'title' => 'required',
-                    'name' => 'required',
+                    'name' => 'required|max:100|unique:permissions,name',
+                    'title' => 'required|max:500',
                 ]
             );
-            if ($validator->fails()){
+            if ($validator->fails()) {
                 return Response::error($validator->messages());
             }
             $data = $this->permissionRepo->createOrUpdate($request->all());
-            if(!$data) {
+            if (!$data) {
                 return Response::error();
             }
             return Response::success($data);
@@ -93,13 +100,65 @@ class PermissionController extends Controller
     public function destroy($id): JsonResponse
     {
         try {
-            $data= $this->permissionRepo->delete($id);
+            $data = $this->permissionRepo->delete($id);
             if (!$data) {
                 return Response::error();
             }
             return Response::success();
         } catch (Exception $e) {
             TelegramService::sendError($e);
+            return Response::error($e->getMessage());
+        }
+    }
+
+    /**
+     * Thêm/bớt danh sách permissions cho user
+     *
+     * @param $request
+     * @return JsonResponse
+     */
+    public function syncedPermissions($request): JsonResponse
+    {
+        try {
+            $user_id = Arr::get($request, 'user_id');
+            $permission_ids = Arr::get($request, 'permission_ids');
+
+            $user = $this->userRepo->find($user_id);
+            if (!$user) {
+                return Response::error('NOT_FOUND_USER');
+            }
+            if (!$permission_ids) {
+                return Response::error('EMPTY_PERMISSION');
+            }
+            $user->syncPermissions($permission_ids);
+            return Response::success();
+        } catch (Exception $e) {
+            return Response::error($e->getMessage());
+        }
+    }
+
+    /**
+     * Loại bỏ 1 permission khỏi user
+     *
+     * @param $request
+     * @return JsonResponse
+     */
+    public function revokePermission($request): JsonResponse
+    {
+        try {
+            $user_id = Arr::get($request, 'user_id');
+            $permission_id = (int)Arr::get($request, 'permission_id');
+
+            $user = $this->userRepo->find($user_id);
+            if (!$user) {
+                return Response::error('NOT_FOUND_USER');
+            }
+            if (!$permission_id) {
+                return Response::error('EMPTY_PERMISSION');
+            }
+            $user->revokePermissionTo($permission_id);
+            return Response::success();
+        } catch (Exception $e) {
             return Response::error($e->getMessage());
         }
     }

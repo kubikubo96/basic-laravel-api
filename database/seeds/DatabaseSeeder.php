@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /*$users[] = [
-            'uuid' => (string) Str::uuid(),
+        $users[] = [
+            'id' => (string) Str::uuid(),
             'username' => 'supperadmin',
             'password' => Hash::make('1'),
             'admin' => 1,
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         $users[] = [
-            'uuid' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
+            'id' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
             'username' => 'admin',
             'password' => Hash::make('1'),
             'admin' => 1,
@@ -52,9 +52,27 @@ class DatabaseSeeder extends Seeder
             'updated_at' => null,
         ];
 
+        $users[] = [
+            'id' => '08a02762-e439-40cf-a158-709ee08d51f4',
+            'username' => 'author',
+            'password' => Hash::make('1'),
+            'admin' => 1,
+            'active' => 1,
+            'status' => 0,
+            'email' => 'author@gmail.com',
+            'email_verified_time' => null,
+            'phone_number' => '0777777777',
+            'phone_number_verified_time' => null,
+            'first_name' => 'Auth',
+            'last_name' => 'X',
+            'remember_token' => null,
+            'created_at' => null,
+            'updated_at' => null,
+        ];
+
         for ($i = 0; $i < 5; $i++) {
             $users[] = [
-                'uuid' => (string) Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'username' => 'author'.$i,
                 'password' => Hash::make('1'),
                 'admin' => 1,
@@ -70,11 +88,11 @@ class DatabaseSeeder extends Seeder
                 'created_at' => null,
                 'updated_at' => null,
             ];
-        }*/
+        }
 
-        /*for ($i = 100; $i < 1000; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             $users[] = [
-                'uuid' => (string) Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'username' => 'user'.$i,
                 'password' => Hash::make('1'),
                 'admin' => 0,
@@ -91,10 +109,10 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => null,
             ];
         }
-        DB::table('users')->insert($users);*/
+        DB::table('users')->insert($users);
 
-        /*$posts = [];
-        for ($i = 18000; $i < 22000; $i++) {
+        $posts = [];
+        for ($i = 1; $i < 10; $i++) {
             $posts[] = [
                 'user_id' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
                 'title' => 'Title '.$i,
@@ -106,9 +124,9 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => null,
             ];
         }
-        DB::table('posts')->insert($posts);*/
+        DB::table('posts')->insert($posts);
 
-        /*$roles = [
+        $roles = [
             [
                 'title' => 'Manager users',
                 'name' => 'manager-users',
@@ -147,7 +165,43 @@ class DatabaseSeeder extends Seeder
                 ];
             }
         }
+
+        $role_permissions = [
+            ['role_id' => 1, 'permission_id' => 3],
+            ['role_id' => 1, 'permission_id' => 8],
+            ['role_id' => 1, 'permission_id' => 18],
+
+            ['role_id' => 2, 'permission_id' => 4],
+            ['role_id' => 2, 'permission_id' => 9],
+            ['role_id' => 2, 'permission_id' => 19],
+            ['role_id' => 2, 'permission_id' => 5],
+            ['role_id' => 2, 'permission_id' => 20],
+
+            ['role_id' => 3, 'permission_id' => 1],
+            ['role_id' => 3, 'permission_id' => 2],
+            ['role_id' => 3, 'permission_id' => 3],
+            ['role_id' => 3, 'permission_id' => 6],
+            ['role_id' => 3, 'permission_id' => 7],
+            ['role_id' => 3, 'permission_id' => 8],
+            ['role_id' => 3, 'permission_id' => 11],
+            ['role_id' => 3, 'permission_id' => 12],
+            ['role_id' => 3, 'permission_id' => 16],
+            ['role_id' => 3, 'permission_id' => 17],
+            ['role_id' => 3, 'permission_id' => 17],
+
+            ['role_id' => 4, 'permission_id' => 5],
+            ['role_id' => 4, 'permission_id' => 10],
+            ['role_id' => 4, 'permission_id' => 20],
+        ];
+
+        $user_roles = [
+            ['user_id' => '383ea73e-91a9-49c6-b2b5-393387138e6b', 'role_id' => 3],
+            ['user_id' => '08a02762-e439-40cf-a158-709ee08d51f4', 'role_id' => 2],
+        ];
+
         DB::table('roles')->insert($roles);
-        DB::table('permissions')->insert($permissions);*/
+        DB::table('permissions')->insert($permissions);
+        DB::table('role_permissions')->insert($role_permissions);
+        DB::table('user_roles')->insert($user_roles);
     }
 }

@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Schema::defaultStringLength(125);
+        Schema::defaultStringLength(191);
 
         DB::listen(function($query){
             File::append(
