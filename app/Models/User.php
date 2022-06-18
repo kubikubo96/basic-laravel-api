@@ -16,12 +16,19 @@ class User extends Authenticatable implements JWTSubject
     protected $table = "users";
 
     /**
+     * appends Accessor
+     *
+     * @var string[]
+     */
+    protected $appends = ['full_name'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'uuid', 'username', 'password', 'admin', 'active', 'status', 'email', 'email_verified_time', 'phone_number', 'phone_number_verified_time', 'first_name', 'last_name', 'remember_token'
+        'id', 'username', 'password', 'admin', 'active', 'status', 'email', 'email_verified_time', 'phone_number', 'phone_number_verified_time', 'first_name', 'last_name', 'remember_token'
     ];
 
     /**
@@ -53,9 +60,17 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $casts = [
+        'admin' => 'boolean',
+        'active' => 'boolean',
         'email_verified_time' => 'integer',
         'phone_number_verified_time' => 'integer',
     ];
+
+    /**
+     * Define constance
+     */
+    const ACTIVE = 1;
+    const INACTIVE = 0;
 
     /**
      * Scope a query to only include active users.
@@ -63,7 +78,29 @@ class User extends Authenticatable implements JWTSubject
      */
     public function scopeActive($query)
     {
-        return $query->where('active', 1);
+        return $query->where('active', self::ACTIVE);
+    }
+
+
+    /**
+     * Get the user's last name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getLastNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "$this->first_name $this->last_name";
     }
 
     /**

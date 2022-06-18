@@ -61,8 +61,7 @@ abstract class BaseRepository
     {
         $result = $this->_model->create($data);
         if ($result) {
-            $id = $result['id'] ?? $result['uuid'];
-            return $this->_model->find($id);
+            return $this->_model->find($result['id'] ?? $result['uuid']);
         }
         return $result;
     }

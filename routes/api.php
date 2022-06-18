@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ["cors"]], function () {
     Route::resource('todos', 'TodoController');
     Route::resource('posts', 'PostController');
+    Route::resource('users', 'UserController');
 });

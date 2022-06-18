@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Response;
+use App\Http\Requests\StoreUserRequest;
 use App\Repositories\UserRepository;
-use App\Services\Debug\TelegramService;
+use App\Services\TelegramService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Validator;
 
 class UserController extends Controller
@@ -38,25 +40,16 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StoreUserRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
         try {
-            $validator = Validator::make($request->all(),
-                [
-                    'username' => 'required|unique:users,username',
-                    'password' => 'required',
-                    'email' => 'required|unique:users,email',
-                    'first_name' => 'required',
-                    'last_name' => 'required',
-                ]
-            );
-            if ($validator->fails()) {
-                return Response::error($validator->messages());
-            }
-            $data = $this->userRepo->createOrUpdate($request->all());
+            $params = $request->all();
+            $params['id'] = (string)Str::uuid();
+            $params['password'] = bcrypt($request->password);
+            $data = $this->userRepo->create($params);
             if (!$data) {
                 return Response::error();
             }
@@ -77,6 +70,37 @@ class UserController extends Controller
     {
         try {
             $data = $this->userRepo->find($id);
+            if (!$data) {
+                return Response::error();
+            }
+            return Response::success($data);
+        } catch (Exception $e) {
+            TelegramService::sendError($e);
+            return Response::error($e->getMessage());
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        try {
+            $validator = Validator::make($request->all(),
+                [
+                    'username' => 'required|unique:users,username,' . $id,
+                    'email' => 'required|unique:users,email,' . $id,
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                ]
+            );
+            if ($validator->fails()) {
+                return Response::error($validator->messages());
+            }
+            $data = $this->userRepo->update($id, $request->all());
             if (!$data) {
                 return Response::error();
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Debug;
+namespace App\Services;
 
 use GuzzleHttp\Client;
 
@@ -27,11 +27,12 @@ class TelegramService
 
     public static function sendError($exception)
     {
-        $html = '<b>[Lỗi] : </b><code>' . $exception->getMessage() . '</code>';
-        $html .= '<b>[File] : </b><code>' . $exception->getFile() . '</code>';
-        $html .= '<b>[Line] : </b><code>' . $exception->getLine() . '</code>';
-        $html .= '<b>[Request] : </b><code>' . json_encode(request()->all()) . '</code>';
-        $html .= '<b>[URL] : </b><a href="' . url()->full() . '">' . url()->full() . '</a>';
+        $html = '<b>[Error] : </b><code>' . $exception->getMessage() . '</code>' . PHP_EOL;
+        $html .= '<b>[File] : </b><code>' . $exception->getFile() . '</code>' . PHP_EOL;
+        $html .= '<b>[Line] : </b><code>' . $exception->getLine() . '</code>' . PHP_EOL;
+        $html .= '<b>[Data Request] : </b><code>' . json_encode(request()->all()) . '</code>' . PHP_EOL;
+        $html .= '<b>[URL] : </b><a href="' . url()->full() . '">' . url()->full() . '</a>' . PHP_EOL;
+        $html .= '<b>[Date] : </b><code>' . now() . '</code>' . PHP_EOL;
         self::sendMessage($html);
     }
 }
