@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Permissions;
+namespace App\Helpers\Permissions;
 
 use Exception;
 use Illuminate\Support\Collection;

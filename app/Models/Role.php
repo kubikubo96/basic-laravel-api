@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Services\Permissions\Guard;
-use App\Services\Permissions\PermissionRegistrar;
+use App\Helpers\Permissions\Guard;
+use App\Helpers\Permissions\PermissionRegistrar;
 use App\Traits\HasPermissions;
 use App\Traits\RefreshesPermissionCache;
 use Illuminate\Database\Eloquent\Model;

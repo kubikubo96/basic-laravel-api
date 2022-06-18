@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Permissions;
+namespace App\Helpers\Permissions;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Auth\Access\Authorizable;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Permissions;
+namespace App\Helpers\Permissions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -13,6 +13,7 @@ class Guard
      *
      * @param string|Model $model model class object or name
      * @return Collection
+     * @throws \ReflectionException
      */
     public static function getNames($model): Collection
     {
@@ -70,6 +71,7 @@ class Guard
      *
      * @param string|Model $class model class object or name
      * @return string guard name
+     * @throws \ReflectionException
      */
     public static function getDefaultName($class): string
     {
