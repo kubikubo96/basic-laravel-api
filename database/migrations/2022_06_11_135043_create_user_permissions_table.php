@@ -15,6 +15,7 @@ class CreateUserPermissionsTable extends Migration
     {
         Schema::create('user_permissions', function (Blueprint $table) {
             $table->string('user_id');
+            $table->string('model_type');
             $table->integer('permission_id');
         });
     }

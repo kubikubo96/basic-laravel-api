@@ -9,14 +9,14 @@ use Illuminate\Http\JsonResponse;
  */
 class Response
 {
-    public static function success($data = [], $total = 0, $message = 'Successfully', $status = 200): JsonResponse
+    public static function success($data = [], $total = 0, $message = 'SUCCESS', $status = 200): JsonResponse
     {
         return response()->json([
-            'total' => $total,
-            'data' => $data,
             'status' => $status,
             'message' => $message,
-            "timestamp" => now()
+            'total' => $total,
+            'data' => $data,
+            'timestamp' => now()
         ], $status);
     }
 

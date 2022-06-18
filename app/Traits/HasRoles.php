@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
-use App\Services\Permissions\PermissionRegistrar;
+use App\Helpers\Permissions\PermissionRegistrar;
 use App\Models\Role;
 use App\Models\Permission;
 

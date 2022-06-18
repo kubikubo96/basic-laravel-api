@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use App\Models\Permission;
 use App\Models\Role;
-use App\Services\Permissions\Guard;
-use App\Services\Permissions\PermissionRegistrar;
-use App\Services\Permissions\WildcardPermission;
+use App\Helpers\Permissions\Guard;
+use App\Helpers\Permissions\PermissionRegistrar;
+use App\Helpers\Permissions\WildcardPermission;
 
 trait HasPermissions
 {

@@ -195,8 +195,8 @@ class DatabaseSeeder extends Seeder
         ];
 
         $user_roles = [
-            ['user_id' => '383ea73e-91a9-49c6-b2b5-393387138e6b', 'role_id' => 3],
-            ['user_id' => '08a02762-e439-40cf-a158-709ee08d51f4', 'role_id' => 2],
+            ['user_id' => '383ea73e-91a9-49c6-b2b5-393387138e6b', 'model_type' => 'App\Models\User', 'role_id' => 3],
+            ['user_id' => '08a02762-e439-40cf-a158-709ee08d51f4', 'model_type' => 'App\Models\User', 'role_id' => 2],
         ];
 
         DB::table('roles')->insert($roles);

@@ -31,7 +31,7 @@ class UserController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $data = $this->userRepo->paginate([], $request->page, $request->limit);
+            $data = $this->userRepo->paginate([], $request->page, $request->limit, ['roles.permissions']);
             return Response::success($data['data'], $data['total']);
         } catch (Exception $e) {
             TelegramService::sendError($e);
