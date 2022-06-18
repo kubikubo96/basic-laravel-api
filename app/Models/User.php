@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\SupperAdminScope;
 use App\Traits\HasRoles;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -76,7 +77,18 @@ class User extends Authenticatable implements JWTSubject
     const INACTIVE = 0;
 
     /**
-     * Scope a query to only include active users.
+     * Global Scope
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new SupperAdminScope);
+    }
+
+    /**
+     * Local Scope a query to only include active users.
      *
      */
     public function scopeActive($query)
