@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Services\Debug\TelegramService;
+use App\Services\TelegramService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 

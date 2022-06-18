@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Response;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Services\TelegramService;
 use Exception;
@@ -82,24 +83,13 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(UpdateUserRequest $request, $id): JsonResponse
     {
         try {
-            $validator = Validator::make($request->all(),
-                [
-                    'username' => 'required|unique:users,username,' . $id,
-                    'email' => 'required|unique:users,email,' . $id,
-                    'first_name' => 'required',
-                    'last_name' => 'required',
-                ]
-            );
-            if ($validator->fails()) {
-                return Response::error($validator->messages());
-            }
             $data = $this->userRepo->update($id, $request->all());
             if (!$data) {
                 return Response::error();

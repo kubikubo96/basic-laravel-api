@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Response;
 use App\Repositories\RoleRepository;
-use App\Services\Debug\TelegramService;
+use App\Services\TelegramService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

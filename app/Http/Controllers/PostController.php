@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Response;
+use App\Http\Requests\StorePostRequest;
 use App\Repositories\PostRepository;
-use App\Services\Debug\TelegramService;
+use App\Services\TelegramService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,21 +39,12 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StorePostRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(StorePostRequest $request): JsonResponse
     {
         try {
-            $validator = Validator::make($request->all(),
-                [
-                    'title' => 'required',
-                    'content' => 'required',
-                ]
-            );
-            if ($validator->fails()) {
-                return Response::error($validator->messages());
-            }
             $data = $this->postRepo->create($request->all());
             if (!$data) {
                 return Response::error();
@@ -66,22 +58,13 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StorePostRequest $request
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(StorePostRequest $request, $id): JsonResponse
     {
         try {
-            $validator = Validator::make($request->all(),
-                [
-                    'title' => 'required',
-                    'content' => 'required',
-                ]
-            );
-            if ($validator->fails()) {
-                return Response::error($validator->messages());
-            }
             $data = $this->postRepo->update($id, $request->all());
             if (!$data) {
                 return Response::error();
