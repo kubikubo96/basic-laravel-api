@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasRoles;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -69,6 +69,9 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Define constance
      */
+
+    const IS_ADMINISTRATOR = 1;
+
     const ACTIVE = 1;
     const INACTIVE = 0;
 
@@ -85,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Get the user's last name.
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getLastNameAttribute($value)
@@ -142,6 +145,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'user_permissions','user_id', 'permission_id');
+        return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
     }
 }

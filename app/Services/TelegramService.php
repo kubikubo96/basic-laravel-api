@@ -32,7 +32,7 @@ class TelegramService
         $html .= '<b>[Line] : </b><code>' . $exception->getLine() . '</code>' . PHP_EOL;
         $html .= '<b>[Data Request] : </b><code>' . json_encode(request()->all()) . '</code>' . PHP_EOL;
         $html .= '<b>[URL] : </b><a href="' . url()->full() . '">' . url()->full() . '</a>' . PHP_EOL;
-        $html .= '<b>[Date] : </b><code>' . now() . '</code>' . PHP_EOL;
+        $html .= '<b>[Timestamp] : </b><code>' . now() . '</code>' . PHP_EOL;
         self::sendMessage($html);
     }
 }

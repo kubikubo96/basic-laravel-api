@@ -13,8 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ["cors"]], function () {
+Route::group(['middleware' => ['cors', 'jwt.verify']], function () {
     Route::resource('todos', 'TodoController');
     Route::resource('posts', 'PostController');
     Route::resource('users', 'UserController');
+});
+
+Route::group(['prefix' => 'auth', 'middleware' => ['api']], function () {
+    Route::post('login', 'AuthController@login');
+    Route::get('me', 'AuthController@me');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
 });
