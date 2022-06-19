@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Services\TelegramService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Validator;
@@ -26,12 +25,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
-            $data = $this->userRepo->paginate([], $request->page, $request->limit, ['roles.permissions']);
+            $data = $this->userRepo->paginate([], $request->page, $request->limit, ['roles.permissions', 'permissions']);
             return Response::success($data['data'], $data['total']);
         } catch (Exception $e) {
             TelegramService::sendError($e);
@@ -42,9 +41,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param StoreUserRequest $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(StoreUserRequest $request): JsonResponse
+    public function store(StoreUserRequest $request): array
     {
         try {
             $params = $request->all();
@@ -65,9 +64,9 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->userRepo->find($id);
@@ -85,9 +84,9 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      * @param UpdateUserRequest $request
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function update(UpdateUserRequest $request, $id): JsonResponse
+    public function update(UpdateUserRequest $request, $id): array
     {
         try {
             $data = $this->userRepo->update($id, $request->all());
@@ -105,9 +104,9 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data = $this->userRepo->delete($id);

@@ -35,11 +35,26 @@ abstract class BaseRepository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|Model[]
+     * Get all
      */
-    public function all()
+    public function all(): array
     {
-        return $this->_model->all();
+        $model = $this->_model;
+
+        $data['total'] = $model->count();
+        $data['data'] = $model->all();
+        return $data;
+    }
+
+    /**
+     * Get theo query
+     */
+    public function get($options = [], $with = [], $order = []): array
+    {
+        $query = $this->query($options, $with, $order);
+        $data['total'] = $query->count();
+        $data['data'] = $query->get();
+        return $data;
     }
 
     /**

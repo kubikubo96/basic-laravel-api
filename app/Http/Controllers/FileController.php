@@ -23,9 +23,9 @@ class FileController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
             $data = $this->fileRepo->paginate([], $request->page, $request->limit);
@@ -39,9 +39,9 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -68,9 +68,9 @@ class FileController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->fileRepo->find($id);
@@ -88,9 +88,9 @@ class FileController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data= $this->fileRepo->delete($id);

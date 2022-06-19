@@ -8,7 +8,6 @@ use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Services\TelegramService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -28,13 +27,12 @@ class RoleController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
-            $data = $this->roleRepo->paginate([], $request->page, $request->limit, ['permissions']);
+            $data = $this->roleRepo->all();
             return Response::success($data['data'], $data['total']);
         } catch (Exception $e) {
             TelegramService::sendError($e);
@@ -45,9 +43,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -74,9 +72,9 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->roleRepo->find($id);
@@ -94,9 +92,9 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data = $this->roleRepo->delete($id);
@@ -114,9 +112,9 @@ class RoleController extends Controller
      * Thêm/bớt danh sách permissions cho role
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function syncedPermissions($request): JsonResponse
+    public function syncedPermissions($request): array
     {
         try {
             $role_id = $request->input('role_id');
@@ -140,9 +138,9 @@ class RoleController extends Controller
      * Loại bỏ 1 permission khỏi role
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function revokePermission($request): JsonResponse
+    public function revokePermission($request): array
     {
         try {
             $role_id = $request->input('role_id');
@@ -167,9 +165,9 @@ class RoleController extends Controller
      * Thêm/bớt danh sách role cho user
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function syncedSub($request): JsonResponse
+    public function syncedSub($request): array
     {
         try {
             $user_id = $request->input('user_id');
@@ -194,9 +192,9 @@ class RoleController extends Controller
      * Loại bỏ 1 role khỏi user
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function removeRole($request): JsonResponse
+    public function removeRole($request): array
     {
         try {
             $user_id = $request->input('user_id');

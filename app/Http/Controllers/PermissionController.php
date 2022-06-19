@@ -29,13 +29,12 @@ class PermissionController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(): array
     {
         try {
-            $data = $this->permissionRepo->paginate([], $request->page, $request->limit);
+            $data = $this->permissionRepo->all();
             return Response::success($data['data'], $data['total']);
         } catch (Exception $e) {
             TelegramService::sendError($e);
@@ -46,9 +45,9 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -75,9 +74,9 @@ class PermissionController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->permissionRepo->find($id);
@@ -95,9 +94,9 @@ class PermissionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data = $this->permissionRepo->delete($id);
@@ -115,9 +114,9 @@ class PermissionController extends Controller
      * Thêm/bớt danh sách permissions cho user
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function syncedPermissions($request): JsonResponse
+    public function syncedPermissions($request): array
     {
         try {
             $user_id = Arr::get($request, 'user_id');
@@ -141,9 +140,9 @@ class PermissionController extends Controller
      * Loại bỏ 1 permission khỏi user
      *
      * @param $request
-     * @return JsonResponse
+     * @return array
      */
-    public function revokePermission($request): JsonResponse
+    public function revokePermission($request): array
     {
         try {
             $user_id = Arr::get($request, 'user_id');

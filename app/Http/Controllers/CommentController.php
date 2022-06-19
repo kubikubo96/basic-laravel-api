@@ -23,9 +23,9 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
             $data = $this->commentRepo->paginate([], $request->page, $request->limit);
@@ -39,9 +39,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -69,9 +69,9 @@ class CommentController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->commentRepo->find($id);
@@ -89,9 +89,9 @@ class CommentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data= $this->commentRepo->delete($id);

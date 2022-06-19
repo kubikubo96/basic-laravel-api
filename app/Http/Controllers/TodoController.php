@@ -6,7 +6,6 @@ use App\Helpers\Response;
 use App\Repositories\TodoRepository;
 use App\Services\TelegramService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -23,9 +22,9 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
             $data = $this->todoRepo->index($request);
@@ -39,9 +38,9 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -67,9 +66,9 @@ class TodoController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function show($id): JsonResponse
+    public function show($id): array
     {
         try {
             $data = $this->todoRepo->find($id);
@@ -86,9 +85,10 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return JsonResponse
+     * @param $id
+     * @return array
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, $id): array
     {
         try {
             $validator = Validator::make($request->all(),
@@ -114,9 +114,9 @@ class TodoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return JsonResponse
+     * @return array
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id): array
     {
         try {
             $data = $this->todoRepo->delete($id);
