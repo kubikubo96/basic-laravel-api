@@ -22,9 +22,9 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return array
+     *
      */
-    public function index(Request $request): array
+    public function index(Request $request)
     {
         try {
             $data = $this->todoRepo->index($request);
@@ -38,9 +38,9 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return array
+     *
      */
-    public function store(Request $request): array
+    public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(),
@@ -66,9 +66,9 @@ class TodoController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function show($id): array
+    public function show($id)
     {
         try {
             $data = $this->todoRepo->find($id);
@@ -86,9 +86,9 @@ class TodoController extends Controller
      * Store a newly created resource in storage.
      * @param Request $request
      * @param $id
-     * @return array
+     *
      */
-    public function update(Request $request, $id): array
+    public function update(Request $request, $id)
     {
         try {
             $validator = Validator::make($request->all(),
@@ -114,9 +114,9 @@ class TodoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function destroy($id): array
+    public function destroy($id)
     {
         try {
             $data = $this->todoRepo->delete($id);

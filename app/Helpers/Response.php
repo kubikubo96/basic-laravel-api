@@ -2,23 +2,25 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\JsonResponse;
+
 /**
  * Response Class helper
  */
 class Response
 {
-    public static function success($data = [], $total = 0, $message = 'Successfully', $status = 200): array
+    public static function success($data = [], $total = 0, $message = 'SUCCESS', $status = 200): JsonResponse
     {
-        return [
+        return response()->json([
             'status' => $status,
-            'state' => $status == 200 ? 1 : 0,
             'message' => $message,
             'total' => $total,
             'data' => $data,
-        ];
+            'timestamp' => now()
+        ], $status);
     }
 
-    public static function error($message = 'BAD_REQUEST', $status = 400): array
+    public static function error($message = 'BAD_REQUEST', $status = 400): JsonResponse
     {
         return self::success([], 0, $message, $status);
     }

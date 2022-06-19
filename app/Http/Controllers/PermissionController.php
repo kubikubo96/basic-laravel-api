@@ -29,9 +29,9 @@ class PermissionController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return array
+     *
      */
-    public function index(): array
+    public function index()
     {
         try {
             $data = $this->permissionRepo->all();
@@ -45,9 +45,9 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return array
+     *
      */
-    public function store(Request $request): array
+    public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(),
@@ -74,9 +74,9 @@ class PermissionController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function show($id): array
+    public function show($id)
     {
         try {
             $data = $this->permissionRepo->find($id);
@@ -94,9 +94,9 @@ class PermissionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function destroy($id): array
+    public function destroy($id)
     {
         try {
             $data = $this->permissionRepo->delete($id);
@@ -114,9 +114,9 @@ class PermissionController extends Controller
      * Thêm/bớt danh sách permissions cho user
      *
      * @param $request
-     * @return array
+     *
      */
-    public function syncedPermissions($request): array
+    public function syncedPermissions($request)
     {
         try {
             $user_id = Arr::get($request, 'user_id');
@@ -140,9 +140,9 @@ class PermissionController extends Controller
      * Loại bỏ 1 permission khỏi user
      *
      * @param $request
-     * @return array
+     *
      */
-    public function revokePermission($request): array
+    public function revokePermission($request)
     {
         try {
             $user_id = Arr::get($request, 'user_id');

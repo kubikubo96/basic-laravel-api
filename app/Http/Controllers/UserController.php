@@ -25,9 +25,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return array
+     *
      */
-    public function index(Request $request): array
+    public function index(Request $request)
     {
         try {
             $data = $this->userRepo->paginate([], $request->page, $request->limit, ['roles.permissions', 'permissions']);
@@ -41,9 +41,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param StoreUserRequest $request
-     * @return array
+     *
      */
-    public function store(StoreUserRequest $request): array
+    public function store(StoreUserRequest $request)
     {
         try {
             $params = $request->all();
@@ -64,9 +64,9 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function show($id): array
+    public function show($id)
     {
         try {
             $data = $this->userRepo->find($id);
@@ -84,9 +84,9 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      * @param UpdateUserRequest $request
      * @param $id
-     * @return array
+     *
      */
-    public function update(UpdateUserRequest $request, $id): array
+    public function update(UpdateUserRequest $request, $id)
     {
         try {
             $data = $this->userRepo->update($id, $request->all());
@@ -104,9 +104,9 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function destroy($id): array
+    public function destroy($id)
     {
         try {
             $data = $this->userRepo->delete($id);

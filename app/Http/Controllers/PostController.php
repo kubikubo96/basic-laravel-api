@@ -24,9 +24,9 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return array
+     *
      */
-    public function index(Request $request): array
+    public function index(Request $request)
     {
         try {
             $data = $this->postRepo->paginate([], $request->page, $request->limit);
@@ -40,9 +40,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param StorePostRequest $request
-     * @return array
+     *
      */
-    public function store(StorePostRequest $request): array
+    public function store(StorePostRequest $request)
     {
         try {
             $data = $this->postRepo->create($request->all());
@@ -60,9 +60,9 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      * @param StorePostRequest $request
      * @param $id
-     * @return array
+     *
      */
-    public function update(StorePostRequest $request, $id): array
+    public function update(StorePostRequest $request, $id)
     {
         try {
             $data = $this->postRepo->update($id, $request->all());
@@ -80,9 +80,9 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function show($id): array
+    public function show($id)
     {
         try {
             $data = $this->postRepo->find($id);
@@ -100,9 +100,9 @@ class PostController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function destroy($id): array
+    public function destroy($id)
     {
         try {
             $data = $this->postRepo->delete($id);

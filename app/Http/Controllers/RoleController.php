@@ -27,9 +27,9 @@ class RoleController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return array
+     *
      */
-    public function index(Request $request): array
+    public function index(Request $request)
     {
         try {
             $data = $this->roleRepo->all();
@@ -43,9 +43,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return array
+     *
      */
-    public function store(Request $request): array
+    public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(),
@@ -72,9 +72,9 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function show($id): array
+    public function show($id)
     {
         try {
             $data = $this->roleRepo->find($id);
@@ -92,9 +92,9 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return array
+     *
      */
-    public function destroy($id): array
+    public function destroy($id)
     {
         try {
             $data = $this->roleRepo->delete($id);
@@ -112,9 +112,9 @@ class RoleController extends Controller
      * Thêm/bớt danh sách permissions cho role
      *
      * @param $request
-     * @return array
+     *
      */
-    public function syncedPermissions($request): array
+    public function syncedPermissions($request)
     {
         try {
             $role_id = $request->input('role_id');
@@ -138,9 +138,9 @@ class RoleController extends Controller
      * Loại bỏ 1 permission khỏi role
      *
      * @param $request
-     * @return array
+     *
      */
-    public function revokePermission($request): array
+    public function revokePermission($request)
     {
         try {
             $role_id = $request->input('role_id');
@@ -165,9 +165,9 @@ class RoleController extends Controller
      * Thêm/bớt danh sách role cho user
      *
      * @param $request
-     * @return array
+     *
      */
-    public function syncedSub($request): array
+    public function syncedSub($request)
     {
         try {
             $user_id = $request->input('user_id');
@@ -192,9 +192,9 @@ class RoleController extends Controller
      * Loại bỏ 1 role khỏi user
      *
      * @param $request
-     * @return array
+     *
      */
-    public function removeRole($request): array
+    public function removeRole($request)
     {
         try {
             $user_id = $request->input('user_id');
