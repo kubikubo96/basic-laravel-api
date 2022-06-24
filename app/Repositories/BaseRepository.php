@@ -281,7 +281,16 @@ abstract class BaseRepository
             $query = $query->onlyTrashed();
         }
 
-        return $query->orderBy($options['order_by'] ?? 'created_at', $options['sort'] ?? 'desc');
+        /**
+         * exp: $options['order'] = ['created_at', 'desc']
+         */
+        if (isset($options['order'])) {
+            $query = $query->orderBy(array_shift($options['order']), end($options['order']));
+        } else {
+            $query = $query->latest();
+        }
+
+        return $query;
     }
 
     /**
