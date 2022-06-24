@@ -29,7 +29,7 @@ class APIController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            return Response::success(Post::with(['user', 'comments'])->get());
+            return Response::success(__('messages.welcome'));
         } catch (Exception $e) {
             TelegramService::sendError($e);
             return Response::error($e->getMessage());
