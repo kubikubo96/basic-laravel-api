@@ -222,7 +222,7 @@ abstract class BaseRepository
                 $query = $query->orderBy($key, $value);
             }
         } else {
-            $query = $query->orderBy('created_at', 'desc');
+            $query = $query->latest();
         }
         return $query;
     }
