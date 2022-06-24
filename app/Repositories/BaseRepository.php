@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
@@ -35,7 +36,7 @@ abstract class BaseRepository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|Model[]
+     * Get all
      */
     public function all()
     {
@@ -126,8 +127,8 @@ abstract class BaseRepository
      */
     public function createOrUpdate(array $data)
     {
-        if (isset($data['id'])) {
-            $this->update($data['id'], $data);
+        if (isset($data['update_id'])) {
+            $this->update($data['update_id'], $data);
         }
         return $this->create($data);
     }
@@ -148,54 +149,6 @@ abstract class BaseRepository
     }
 
     /**
-     * Restore: un-delete
-     *
-     * @param $instance
-     * @return mixed
-     */
-    public function restore($instance)
-    {
-        return $instance->restore();
-    }
-
-    /**
-     * Các lựa chọn query where data
-     *
-     * @param $options
-     * @param $query
-     * @return mixed
-     */
-    public function switchQuery($options, $query)
-    {
-        if (!empty($options)) {
-            foreach ($options as $item) {
-                $opera = $item['opera'] ?? '=';
-                switch ($opera) {
-                    case 'like':
-                        $query = $query->where($item['key'], 'like', '%' . $item['value'] . '%');
-                        break;
-                    case 'in':
-                        $query = $query->whereIn($item['key'], $item['value']);
-                        break;
-                    case 'null':
-                        $query = $query->whereNull($item['key']);
-                        break;
-                    case 'notNull':
-                        $query = $query->whereNotNull($item['key']);
-                        break;
-                    case 'between':
-                        $query = $query->whereBetween($item['key'], $item['value']);
-                        break;
-                    default:
-                        $query = $query->where($item['key'], $opera, $item['value']);
-                }
-
-            }
-        }
-        return $query;
-    }
-
-    /**
      * Query data
      *
      * @param array $options
@@ -206,23 +159,13 @@ abstract class BaseRepository
     {
         $query = $this->_model;
         if ($options) {
-            foreach ($options as $key => $value) {
-                if (is_array($value)) {
-                    $query = $query->whereIn($key, $value);
-                } else {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->queryOptions($options, $query);
         }
         if ($with) {
             $query = $query->with($with);
         }
         if ($order) {
-            foreach ($order as $key => $value) {
-                $query = $query->orderBy($key, $value);
-            }
-        } else {
-            $query = $query->latest();
+            $query = $this->order($order, $query);
         }
         return $query;
     }
@@ -239,57 +182,24 @@ abstract class BaseRepository
         if (!empty($options['select'])) {
             $query = $query->select($options['select']);
         }
-
         if (!empty($options['options'])) {
-            $query = $this->switchQuery($options['options'], $query);
+            $query = $this->queryOptionsDeeper($options['options'], $query);
         }
-
         if (!empty($options['with'])) {
-            if (!empty($options['with']['relation'])) {
-                $relation = $options['with']['relation'];
-                $options = $options['with']['options'] ?? [];
-                $query = $query->with([$relation => function ($query) use ($options) {
-                    if (!empty($options)) {
-                        $this->switchQuery($options, $query);
-                    }
-                }]);
-            } else {
-                $query = $query->with($options['with']);
-            }
+            $query = $this->withDeeper($options['with'], $query);
         }
-
         if (!empty($options['where-has'])) {
-            if (!empty($options['where-has']['relation'])) {
-                $relation = $options['where-has']['relation'];
-                $options = $options['where-has']['options'] ?? [];
-                $query = $query->whereHas($relation, function ($query) use ($options) {
-                    if (!empty($options)) {
-                        $this->switchQuery($options, $query);
-                    }
-                });
-            } else {
-                $query = $query->whereHas($options['where-has'], function ($query) {
-                });
-            }
+            $query = $this->whereHasDeeper($options['where-has'], $query);
         }
-
-        if (isset($options['with-trash'])) {
+        if (!empty($options['with-trash'])) {
             $query = $query->withTrashed();
         }
-
-        if (isset($options['only-trash'])) {
+        if (!empty($options['only-trash'])) {
             $query = $query->onlyTrashed();
         }
-
-        /**
-         * exp: $options['order'] = ['created_at', 'desc']
-         */
-        if (isset($options['order'])) {
-            $query = $query->orderBy(array_shift($options['order']), end($options['order']));
-        } else {
-            $query = $query->latest();
+        if (!empty($options['order'])) {
+            $query = $this->order($options['order'], $query);
         }
-
         return $query;
     }
 
@@ -337,7 +247,6 @@ abstract class BaseRepository
 
         $query->take($limit);
         $query->skip(($page - 1) * $limit);
-
         return $query->get();
     }
 
@@ -356,7 +265,6 @@ abstract class BaseRepository
         $query = $this->query($options, $with, $order);
         $data['total'] = $query->count();
         $data['data'] = $this->paginatedQuery($query, $page, $limit);
-
         return $data;
     }
 
@@ -373,7 +281,130 @@ abstract class BaseRepository
         $query = $this->queryDeeper($options);
         $data['total'] = $query->count();
         $data['data'] = $this->paginatedQuery($query, $page, $limit);
-
         return $data;
+    }
+
+    /**
+     * Order query
+     *
+     * @param array $order
+     * @param null $query
+     * @return mixed
+     */
+    public function order($order = [], $query = null)
+    {
+        if (!$query) {
+            $query = $this->_model;
+        }
+        if (!empty($order)) {
+            return $query->orderBy(reset($order), end($order));
+        }
+        return $query->latest();
+    }
+
+    /**
+     * Query options
+     *
+     * @param array $options
+     * @param null $query
+     * @return Model|mixed|null
+     */
+    public function queryOptions($options = [], $query = null)
+    {
+        if (!$query) {
+            $query = $this->_model;
+        }
+        foreach ($options as $key => $value) {
+            if (is_array($value)) {
+                $query = $query->whereIn($key, $value);
+            } else {
+                $query = $query->where($key, $value);
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * Các lựa chọn query where data
+     *
+     * @param $options
+     * @param $query
+     * @return mixed
+     */
+    public function queryOptionsDeeper($options = [], $query = null)
+    {
+        if (!$query) {
+            $query = $this->_model;
+        }
+        if (!empty($options)) {
+            foreach ($options as $item) {
+                $opera = $item['opera'] ?? '=';
+                switch ($opera) {
+                    case 'like':
+                        $query = $query->where($item['key'], 'like', '%' . $item['value'] . '%');
+                        break;
+                    case 'in':
+                        $query = $query->whereIn($item['key'], $item['value']);
+                        break;
+                    case 'null':
+                        $query = $query->whereNull($item['key']);
+                        break;
+                    case 'notNull':
+                        $query = $query->whereNotNull($item['key']);
+                        break;
+                    case 'between':
+                        $query = $query->whereBetween($item['key'], $item['value']);
+                        break;
+                    default:
+                        $query = $query->where($item['key'], $opera, $item['value']);
+                }
+
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * With deeper
+     *
+     * @param array $with
+     * @param null $query
+     * @return Builder
+     */
+    public function withDeeper($with = [], $query = null): Builder
+    {
+        if (!$query) {
+            $query = $this->_model;
+        }
+        if (!isset($with['relation'])) {
+            return $query->with($with);
+        }
+        return $query->with([$with['relation'] => function ($query) use ($with) {
+            if (!empty($with['options'])) {
+                $this->queryOptionsDeeper($with['options'], $query);
+            }
+        }]);
+    }
+
+    /**
+     * WhereHas deeper
+     *
+     * @param array $where_has
+     * @param null $query
+     * @return mixed
+     */
+    public function whereHasDeeper($where_has = [], $query = null): Builder
+    {
+        if (!$query) {
+            $query = $this->_model;
+        }
+        if (!isset($where_has['relation'])) {
+            return $query->whereHas($where_has, function ($query) {});
+        }
+        return $query->whereHas([$where_has['relation'] => function ($query) use ($where_has) {
+            if (!empty($where_has['options'])) {
+                $this->queryOptionsDeeper($where_has['options'], $query);
+            }
+        }]);
     }
 }
