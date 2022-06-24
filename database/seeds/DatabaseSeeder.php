@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /*$users[] = [
-            'uuid' => (string) Str::uuid(),
+        $users[] = [
+            'id' => (string)Str::uuid(),
             'username' => 'supperadmin',
             'password' => Hash::make('1'),
             'admin' => 1,
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         $users[] = [
-            'uuid' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
+            'id' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
             'username' => 'admin',
             'password' => Hash::make('1'),
             'admin' => 1,
@@ -54,13 +54,13 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 5; $i++) {
             $users[] = [
-                'uuid' => (string) Str::uuid(),
-                'username' => 'author'.$i,
+                'id' => (string)Str::uuid(),
+                'username' => 'author' . $i,
                 'password' => Hash::make('1'),
                 'admin' => 1,
                 'active' => 1,
                 'status' => 0,
-                'email' => 'author'.$i.'@gmail.com',
+                'email' => 'author' . $i . '@gmail.com',
                 'email_verified_time' => null,
                 'phone_number' => null,
                 'phone_number_verified_time' => null,
@@ -70,17 +70,17 @@ class DatabaseSeeder extends Seeder
                 'created_at' => null,
                 'updated_at' => null,
             ];
-        }*/
+        }
 
-        /*for ($i = 100; $i < 1000; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $users[] = [
-                'uuid' => (string) Str::uuid(),
-                'username' => 'user'.$i,
+                'id' => (string)Str::uuid(),
+                'username' => 'user' . $i,
                 'password' => Hash::make('1'),
                 'admin' => 0,
                 'active' => 1,
                 'status' => 0,
-                'email' => 'user'.$i.'@gmail.com',
+                'email' => 'user' . $i . '@gmail.com',
                 'email_verified_time' => null,
                 'phone_number' => null,
                 'phone_number_verified_time' => null,
@@ -91,24 +91,24 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => null,
             ];
         }
-        DB::table('users')->insert($users);*/
+        DB::table('users')->insert($users);
 
-        /*$posts = [];
-        for ($i = 18000; $i < 22000; $i++) {
+        $posts = [];
+        for ($i = 0; $i < 5; $i++) {
             $posts[] = [
                 'user_id' => '383ea73e-91a9-49c6-b2b5-393387138e6b',
-                'title' => 'Title '.$i,
-                'content' => 'Content '.$i,
-                'slug' => 'slug-'.$i,
+                'title' => 'Title ' . $i,
+                'content' => 'Content ' . $i,
+                'slug' => 'slug-' . $i,
                 'active' => 1,
                 'status' => 0,
                 'created_at' => null,
                 'updated_at' => null,
             ];
         }
-        DB::table('posts')->insert($posts);*/
+        DB::table('posts')->insert($posts);
 
-        /*$roles = [
+        $roles = [
             [
                 'title' => 'Manager users',
                 'name' => 'manager-users',
@@ -140,14 +140,14 @@ class DatabaseSeeder extends Seeder
         foreach ($a as $i) {
             foreach ($b as $j) {
                 $permissions[] = [
-                    'title' => $i.'-'.$j,
-                    'name' => $i.'-'.$j,
+                    'title' => $i . '-' . $j,
+                    'name' => $i . '-' . $j,
                     'created_at' => null,
                     'updated_at' => null,
                 ];
             }
         }
         DB::table('roles')->insert($roles);
-        DB::table('permissions')->insert($permissions);*/
+        DB::table('permissions')->insert($permissions);
     }
 }
