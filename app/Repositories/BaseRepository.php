@@ -235,7 +235,7 @@ abstract class BaseRepository
      */
     public function queryDeeper($options = [])
     {
-        $query = $this->query();
+        $query = $this->_model;
         if (!empty($options['select'])) {
             $query = $query->select($options['select']);
         }
