@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Response;
+use App\Models\Post;
 use App\Repositories\PostRepository;
 use App\Services\TelegramService;
 use Exception;
@@ -28,8 +29,7 @@ class APIController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $data = $this->postRepo->paginate([], $request->page, $request->limit);
-            return Response::success($data['data'], $data['total']);
+            return Response::success(Post::with(['user', 'comments'])->get());
         } catch (Exception $e) {
             TelegramService::sendError($e);
             return Response::error($e->getMessage());
