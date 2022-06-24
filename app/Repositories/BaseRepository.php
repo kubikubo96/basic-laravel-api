@@ -191,12 +191,6 @@ abstract class BaseRepository
         if (!empty($options['where-has'])) {
             $query = $this->whereHasDeeper($options['where-has'], $query);
         }
-        if (!empty($options['with-trash'])) {
-            $query = $query->withTrashed();
-        }
-        if (!empty($options['only-trash'])) {
-            $query = $query->onlyTrashed();
-        }
         if (!empty($options['order'])) {
             $query = $this->order($options['order'], $query);
         }
