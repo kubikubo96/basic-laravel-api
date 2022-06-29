@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
  */
 class Response
 {
-    public static function success($data = [], $total = 0, $message = 'SUCCESS', $status = 200): JsonResponse
+    public static function success($data = [], $total = 0, $message = 'Successfully', $status = 200): JsonResponse
     {
         return response()->json([
             'status' => $status,
@@ -20,8 +20,11 @@ class Response
         ], $status);
     }
 
-    public static function error($message = 'BAD_REQUEST', $status = 400): JsonResponse
+    public static function error($error = 'BAD_REQUEST', $status = 400): JsonResponse
     {
-        return self::success([], 0, $message, $status);
+        return response()->json([
+            'error' => $error,
+            'timestamp' => now()
+        ], $status);
     }
 }

@@ -8,6 +8,7 @@ use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Services\TelegramService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -212,6 +213,25 @@ class RoleController extends Controller
             return Response::success();
         } catch (Exception $e) {
             return Response::error($e->getMessage());
+        }
+    }
+
+    /**
+     * Get list role by user
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getByUser($id)
+    {
+        try {
+            $user = $this->userRepo->find($id);
+            if(!$user) {
+                return Response::error();
+            }
+            $user->load('roles.permissions');
+            return Response::success($user->roles);
+        } catch (Exception $e) {
+            return Response::error();
         }
     }
 }

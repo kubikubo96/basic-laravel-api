@@ -8,7 +8,6 @@ use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Services\TelegramService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Validator;
