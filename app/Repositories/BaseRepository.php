@@ -191,7 +191,7 @@ abstract class BaseRepository
         if (!empty($options['order'])) {
             $query = $this->order($options['order'], $query);
         }
-        return $query;
+        return $this->order($options['order'], $query);
     }
 
     /**
@@ -390,7 +390,8 @@ abstract class BaseRepository
             $query = $this->_model;
         }
         if (!isset($where_has['relation'])) {
-            return $query->whereHas($where_has, function ($query) {});
+            return $query->whereHas($where_has, function ($query) {
+            });
         }
         return $query->whereHas([$where_has['relation'] => function ($query) use ($where_has) {
             if (!empty($where_has['options'])) {
