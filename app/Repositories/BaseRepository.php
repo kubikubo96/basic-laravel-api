@@ -164,10 +164,7 @@ abstract class BaseRepository
         if ($with) {
             $query = $query->with($with);
         }
-        if ($order) {
-            $query = $this->order($order, $query);
-        }
-        return $query;
+        return $this->order($order, $query);
     }
 
     /**
@@ -291,7 +288,7 @@ abstract class BaseRepository
             $query = $this->_model;
         }
         if (!empty($order)) {
-            return $query->orderBy(reset($order), end($order));
+            return $query->orderBy(array_key_first($order), end($order));
         }
         return $query->latest();
     }
