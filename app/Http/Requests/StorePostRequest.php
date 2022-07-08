@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UppercaseRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -26,7 +27,10 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'title' => [
+                'required',
+//                new UppercaseRule()
+            ],
             'content' => 'required',
         ];
     }
