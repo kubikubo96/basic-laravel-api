@@ -15,7 +15,8 @@
         "laravel/framework": "^7.29",
         "laravel/telescope": "^3.5",
         "laravel/tinker": "^2.5",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
