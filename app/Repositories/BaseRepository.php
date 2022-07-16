@@ -190,8 +190,10 @@ abstract class BaseRepository
         }
         if (!empty($options['order'])) {
             $query = $this->order($options['order'], $query);
+        } else {
+            $query = $this->order([], $query);
         }
-        return $this->order($options['order'], $query);
+        return $query;
     }
 
     /**
