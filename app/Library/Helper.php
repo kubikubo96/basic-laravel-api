@@ -7,6 +7,22 @@ if (!function_exists('auth_user')) {
     }
 }
 
+if (!function_exists('is_valuable')) {
+    function is_valuable($value)
+    {
+        if (empty($value)) {
+            return false;
+        } else if ($value === "undefined") {
+            return false;
+        } else if ($value === "false") {
+            return false;
+        } else if ($value === "NaN") {
+            return false;
+        }
+        return true;
+    }
+}
+
 if (!function_exists('base64url_encode')) {
     function base64url_encode($str = '')
     {

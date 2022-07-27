@@ -331,6 +331,9 @@ abstract class BaseRepository
         }
         if (!empty($options)) {
             foreach ($options as $item) {
+                if (empty($item['value']) && empty($item['except'])) {
+                    continue;
+                }
                 $opera = $item['opera'] ?? '=';
                 switch ($opera) {
                     case 'like':
