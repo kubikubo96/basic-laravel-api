@@ -55,14 +55,20 @@ abstract class BaseRepository
 
     /**
      * Create
+     *
      * @param array $data
+     * @param string $primary_key
      * @return mixed
      */
-    public function create(array $data)
+    public function create(array $data, $primary_key = 'id')
     {
         $result = $this->_model->create($data);
-        if ($result) {
-            return $this->_model->find($result['id'] ?? $result['uuid']);
+        try {
+            if ($result) {
+                return $this->_model->find($result[$primary_key]);
+            }
+        } catch (\Exception $e) {
+            return $result;
         }
         return $result;
     }
